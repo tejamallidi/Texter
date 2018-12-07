@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if((dataSnapshot.child("name").exists())){
-                    String name = dataSnapshot.child("name").getValue().toString();
-                    Toast.makeText(MainActivity.this, "Welcome "+name, Toast.LENGTH_SHORT).show();
+                    //String name = dataSnapshot.child("name").getValue().toString();
+                    //Toast.makeText(MainActivity.this, "Welcome "+name, Toast.LENGTH_SHORT).show();
                 } else {
                     SendUserToSettingsActivity();
                 }

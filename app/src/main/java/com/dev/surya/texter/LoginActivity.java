@@ -20,6 +20,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil;
+
 public class LoginActivity extends AppCompatActivity {
 
 //    private FirebaseUser currentUser;
@@ -52,6 +54,14 @@ public class LoginActivity extends AppCompatActivity {
                 allowUserToLogin();
             }
         });
+
+        phoneLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, PhoneLoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void allowUserToLogin() {
@@ -63,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(password))
             userPassword.setError("Please enter Password with at-least 6 characters");
         else {
+            UIUtil.hideKeyboard(LoginActivity.this);
             loadingBar.setTitle("Sign In");
             loadingBar.setMessage("Please Wait...");
             loadingBar.setCancelable(true);

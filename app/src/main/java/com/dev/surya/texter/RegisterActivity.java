@@ -22,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private Button createAccountButton;
@@ -66,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(password))
             userPassword.setError("Please enter Password with at-least 6 characters");
         else {
+            UIUtil.hideKeyboard(RegisterActivity.this);
             loadingBar.setTitle("Creating New Account");
             loadingBar.setMessage("Please Wait, while we are creating an account for you..");
             loadingBar.setCancelable(true);
