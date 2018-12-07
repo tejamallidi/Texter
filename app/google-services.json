@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "495728793729",
+    "firebase_url": "https://texter-931a9.firebaseio.com",
+    "project_id": "texter-931a9",
+    "storage_bucket": "texter-931a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:495728793729:android:2ed761e2bf23f224",
+        "android_client_info": {
+          "package_name": "com.dev.surya.texter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "495728793729-nna7fc59855f2ki8u0nnacaegrapppsc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dev.surya.texter",
+            "certificate_hash": "ad24d751c4e2251d9346c9f174e6ed0d7f2e198d"
+          }
+        },
+        {
+          "client_id": "495728793729-q85fjevdro0v6e8qmfrtrilh0g5al339.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChcLwkd6iUhhNDD3sb-beancm_s5n9MOU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "495728793729-q85fjevdro0v6e8qmfrtrilh0g5al339.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
