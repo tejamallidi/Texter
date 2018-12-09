@@ -191,9 +191,32 @@ public class RequestFragment extends Fragment {
                                        final String requestUserName = dataSnapshot.child("name").getValue().toString();
 
                                        holder.userName.setText(requestUserName);
-                                       holder.userStatus.setText("Request Pending");
-                                       holder.acceptButton.setVisibility(View.INVISIBLE);
+                                       holder.userStatus.setText("Request Pending with " + requestUserName);
+                                       holder.acceptButton.setVisibility(View.VISIBLE);
                                        holder.declineButton.setVisibility(View.INVISIBLE);
+
+                                       holder.acceptButton.setText("Cancel");
+                                       holder.acceptButton.setOnClickListener(new View.OnClickListener() {
+                                           @Override
+                                           public void onClick(View v) {
+                                               chatRequestRef.child(currentUserID).child(listUserID)
+                                                       .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                                                   @Override
+                                                   public void onComplete(@NonNull Task<Void> task) {
+                                                       if(task.isSuccessful()) {
+                                                           chatRequestRef.child(listUserID).child(currentUserID)
+                                                                   .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                               @Override
+                                                               public void onComplete(@NonNull Task<Void> task) {
+                                                                   Toast.makeText(getContext(),"Request Declined", Toast.LENGTH_SHORT).show();
+                                                               }
+                                                           });
+                                                       }
+                                                   }
+                                               });
+                                           }
+                                       });
 
                                    }
 
