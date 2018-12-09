@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +40,7 @@ public class ChatsFragment extends Fragment {
 
     private String currentUserID;
 
+
     public ChatsFragment() {
         // Required empty public constructor
     }
@@ -50,14 +53,11 @@ public class ChatsFragment extends Fragment {
         privateChatView = inflater.inflate(R.layout.fragment_chats, container, false);
 
         mAuth = FirebaseAuth.getInstance();
-        currentUserID = mAuth.getCurrentUser().getUid();
-        chatsRef = FirebaseDatabase.getInstance().getReference().child("Contacts").child(currentUserID);
+        chatsRef = FirebaseDatabase.getInstance().getReference().child("Contacts");
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
         chatList = privateChatView.findViewById(R.id.chats_list);
         chatList.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
 
         return privateChatView;
     }
@@ -65,61 +65,82 @@ public class ChatsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            currentUserID = user.getUid();
+            FirebaseRecyclerOptions<Contacts> options = new FirebaseRecyclerOptions.Builder<Contacts>()
+                    .setQuery(chatsRef.child(currentUserID), Contacts.class)
+                    .build();
 
-        FirebaseRecyclerOptions<Contacts> options = new FirebaseRecyclerOptions.Builder<Contacts>()
-                .setQuery(chatsRef, Contacts.class)
-                .build();
+            FirebaseRecyclerAdapter<Contacts, ChatsViewHolder> adapter = new FirebaseRecyclerAdapter<Contacts, ChatsViewHolder>(options) {
+                @Override
+                protected void onBindViewHolder(@NonNull final ChatsViewHolder holder, int position, @NonNull Contacts model) {
+                    final String usersIDs = getRef(position).getKey();
+                    final String[] retImage = {"default_image"};
 
-        FirebaseRecyclerAdapter<Contacts, ChatsViewHolder> adapter = new FirebaseRecyclerAdapter<Contacts, ChatsViewHolder>(options) {
-            @Override
-            protected void onBindViewHolder(@NonNull final ChatsViewHolder holder, int position, @NonNull Contacts model) {
-                final String usersIDs = getRef(position).getKey();
-                final String[] retImage = {"default_image"};
+                    usersRef.child(usersIDs).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists())
+                            {
+                                if (dataSnapshot.hasChild("image")) {
+                                    retImage[0] = dataSnapshot.child("image").getValue().toString();
+                                    Picasso.get().load(retImage[0]).placeholder(R.drawable.profile_image).into(holder.profileImage);
+                                }
 
-                usersRef.child(usersIDs).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.hasChild("image") && dataSnapshot.exists()){
-                            retImage[0] = dataSnapshot.child("image").getValue().toString();
-                            Picasso.get().load(retImage[0]).placeholder(R.drawable.profile_image).into(holder.profileImage);
+                            final String retName = dataSnapshot.child("name").getValue().toString();
+//                            final String retStatus = dataSnapshot.child("status").getValue().toString();
+
+                            holder.userName.setText(retName);
+
+                            if (dataSnapshot.child("UserState").hasChild("state")) {
+                                String state = dataSnapshot.child("UserState").child("state").getValue().toString();
+                                String date = dataSnapshot.child("UserState").child("date").getValue().toString();
+                                String time = dataSnapshot.child("UserState").child("time").getValue().toString();
+
+                                if (state.equals("online")) {
+                                    holder.userStatus.setText("online");
+
+                                } else if (state.equals("offline")){
+                                    holder.userStatus.setText("offline");
+                                }
+
+                            } else {
+                                holder.userStatus.setText("offline");
+                            }
+
+                            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(getContext(), ChatActivity.class);
+                                    intent.putExtra("visit_user_id", usersIDs);
+                                    intent.putExtra("visit_user_name", retName);
+                                    intent.putExtra("visit_user_image", retImage[0]);
+                                    startActivity(intent);
+                                }
+                            });
+                        }
                         }
 
-                        final String retName = dataSnapshot.child("name").getValue().toString();
-                        final String retStatus = dataSnapshot.child("status").getValue().toString();
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        holder.userName.setText(retName);
-                        holder.userStatus.setText("Last Seen: ");
+                        }
+                    });
 
-                        holder.itemView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(getContext(), ChatActivity.class);
-                                intent.putExtra("visit_user_id", usersIDs);
-                                intent.putExtra("visit_user_name", retName);
-                                intent.putExtra("visit_user_image", retImage[0]);
-                                startActivity(intent);
-                            }
-                        });
-                    }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                @NonNull
+                @Override
+                public ChatsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+                    View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.users_display_layout, viewGroup, false);
+                    return new ChatsViewHolder(view);
+                }
+            };
 
-                    }
-                });
-
-            }
-
-            @NonNull
-            @Override
-            public ChatsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.users_display_layout, viewGroup, false);
-                return new ChatsViewHolder(view);
-            }
-        };
-
-        chatList.setAdapter(adapter);
-        adapter.startListening();
+            chatList.setAdapter(adapter);
+            adapter.startListening();
+        }
     }
 
 
