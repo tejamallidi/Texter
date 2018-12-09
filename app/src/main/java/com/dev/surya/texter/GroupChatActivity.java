@@ -4,7 +4,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -136,7 +138,26 @@ public class GroupChatActivity extends AppCompatActivity {
         String messageKey = groupNameRef.push().getKey();
 
         if(TextUtils.isEmpty(message)){
-            Toast.makeText(this, "Please Type your message", Toast.LENGTH_SHORT).show();
+            userMessageInput.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    if(s.toString().trim().length()==0){
+                        sendMessageButton.setEnabled(false);
+                    } else {
+                        sendMessageButton.setEnabled(true);
+                    }
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
         } else {
             Calendar calendarForDate = Calendar.getInstance();
             SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");

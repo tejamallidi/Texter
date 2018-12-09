@@ -17,6 +17,7 @@
         app:civ_border_width="2dp"
         app:civ_border_color="@color/colorPrimary"/>
 
+
     <EditText
         android:id="@+id/set_user_name"
         android:layout_width="match_parent"
@@ -59,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/set_profile_status"
         android:inputType="textMultiLine"
-        android:text="Update"
+        android:text="Update Status"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
         android:textStyle="bold"

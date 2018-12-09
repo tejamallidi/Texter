@@ -13,23 +13,24 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/users_profile_image"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:src="@drawable/profile_image"
+            android:padding="2dp"
             />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:padding="2dp"
             >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
+                android:paddingStart="10dp"
                 >
 
                 <TextView
@@ -40,6 +41,7 @@
                     android:textAlignment="textStart"
                     android:textStyle="bold"
                     android:textSize="18sp"
+                    android:textColor="@color/black"
                     />
 
                 <ImageView
@@ -60,12 +62,48 @@
                 android:text="User Status"
                 android:textAlignment="textStart"
                 android:textSize="16sp"
-                android:paddingLeft="10dp"
-                android:paddingTop="2dp"
+                android:paddingStart="10dp"
+                android:padding="2dp"
                 />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="2dp"
+                >
+
+                <Button
+                    android:id="@+id/request_accept_btn"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:text="Accept"
+                    android:textSize="14sp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
+                    android:background="@drawable/request_accept_button"
+                    android:visibility="invisible"
+
+                    />
+
+                <Button
+                    android:id="@+id/request_decline_btn"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:text="Decline"
+                    android:layout_marginStart="10dp"
+                    android:textSize="14sp"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/request_decline_button"
+                    android:visibility="invisible"
+                    />
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
+
 
 </RelativeLayout>

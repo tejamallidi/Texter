@@ -113,7 +113,8 @@ public class ProfileActivity extends AppCompatActivity {
                             }
                         });
                     }
-                } else {
+                }
+                else {
                     contactsRef.child(senderUserID).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -35,7 +36,12 @@ public class FindFriendsActivity extends AppCompatActivity {
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
         findFreindsRecyclerList = findViewById(R.id.find_friends_recycler_list);
-        findFreindsRecyclerList.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(this, linearLayoutManager.getOrientation());
+        findFreindsRecyclerList.setHasFixedSize(true);
+        findFreindsRecyclerList.setLayoutManager(linearLayoutManager);
+        findFreindsRecyclerList.addItemDecoration(itemDecoration);
 
         mToolBar = findViewById(R.id.find_friends_toolbar);
         setSupportActionBar(mToolBar);
