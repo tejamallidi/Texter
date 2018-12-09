@@ -159,11 +159,11 @@ public class SettingsActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(setStatus))
             userStatus.setError("Please feel free to update your status");
         else{
-            final HashMap<String, String> profileMap = new HashMap<>();
+            final HashMap<String, Object> profileMap = new HashMap<>();
             profileMap.put("uid",currentUserId);
             profileMap.put("name",setUsername);
             profileMap.put("status",setStatus);
-            rootRef.child("Users").child(currentUserId).setValue(profileMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            rootRef.child("Users").child(currentUserId).updateChildren(profileMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
