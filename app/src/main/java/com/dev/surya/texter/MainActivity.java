@@ -174,7 +174,6 @@ public class MainActivity extends AppCompatActivity {
     private void SendUserToSettingsActivity() {
         Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
         startActivity(intent);
-        finish();
     }
 
     private void SendUserToFindFriendsActivity() {

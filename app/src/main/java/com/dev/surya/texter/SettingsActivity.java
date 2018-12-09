@@ -9,14 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -50,6 +46,8 @@ public class SettingsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private String currentUserId;
     private DatabaseReference rootRef;
+
+    private Toolbar settingsToolbar;
 
     private StorageReference userProfileImageRef;
 
@@ -99,6 +97,11 @@ public class SettingsActivity extends AppCompatActivity {
         userStatus = findViewById(R.id.set_profile_status);
         userProfileImage = findViewById(R.id.set_profile_image);
         loadingBar = new ProgressDialog(this);
+        settingsToolbar = findViewById(R.id.settings_toolbar);
+        setSupportActionBar(settingsToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setTitle("Account Settings");
     }
 
     @Override
@@ -159,7 +162,7 @@ public class SettingsActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(setStatus))
             userStatus.setError("Please feel free to update your status");
         else{
-            final HashMap<String, Object> profileMap = new HashMap<>();
+            HashMap<String, Object> profileMap = new HashMap<>();
             profileMap.put("uid",currentUserId);
             profileMap.put("name",setUsername);
             profileMap.put("status",setStatus);
@@ -183,9 +186,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void SendUserToMainActivity() {
         Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        finish();
     }
 
     private void retrieveUserInfo() {
