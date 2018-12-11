@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -57,7 +58,12 @@ public class ChatsFragment extends Fragment {
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
         chatList = privateChatView.findViewById(R.id.chats_list);
-        chatList.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), linearLayoutManager.getOrientation());
+        chatList.setHasFixedSize(true);
+        chatList.setLayoutManager(linearLayoutManager);
+        chatList.addItemDecoration(itemDecoration);
 
         return privateChatView;
     }
@@ -133,7 +139,7 @@ public class ChatsFragment extends Fragment {
                 @NonNull
                 @Override
                 public ChatsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                    View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.users_display_layout, viewGroup, false);
+                    View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.users_layout, viewGroup, false);
                     return new ChatsViewHolder(view);
                 }
             };

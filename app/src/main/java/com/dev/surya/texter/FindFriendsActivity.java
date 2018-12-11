@@ -62,7 +62,7 @@ public class FindFriendsActivity extends AppCompatActivity {
         FirebaseRecyclerAdapter<Contacts, findFriendsViewHolder> adapter =
                 new FirebaseRecyclerAdapter<Contacts, findFriendsViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull findFriendsViewHolder holder, final int position, @NonNull Contacts model) {
+            protected void onBindViewHolder(@NonNull final findFriendsViewHolder holder, int position, @NonNull Contacts model) {
                 holder.userName.setText(model.getName());
                 holder.userStatus.setText(model.getStatus());
                 Picasso.get().load(model.getImage()).placeholder(R.drawable.profile_image).into(holder.profileImage);
@@ -70,7 +70,7 @@ public class FindFriendsActivity extends AppCompatActivity {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String visitUserID = getRef(position).getKey();
+                        String visitUserID = getRef(holder.getAdapterPosition()).getKey();
                         Intent intent = new Intent(FindFriendsActivity.this, ProfileActivity.class);
                         intent.putExtra("visitUserID",visitUserID);
                         startActivity(intent);
@@ -81,7 +81,7 @@ public class FindFriendsActivity extends AppCompatActivity {
             @NonNull
             @Override
             public findFriendsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.users_display_layout,viewGroup,false);
+                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.users_layout,viewGroup,false);
                 findFriendsViewHolder viewHolder = new findFriendsViewHolder(view);
                 return viewHolder;
             }

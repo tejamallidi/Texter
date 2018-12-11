@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("CloudChat");
 
+
+
         mViewPager = findViewById(R.id.main_tabs_pager);
         mTabsAccessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mTabsAccessorAdapter);

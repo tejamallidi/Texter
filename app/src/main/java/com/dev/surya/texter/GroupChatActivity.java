@@ -13,7 +13,6 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -23,7 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -109,7 +107,9 @@ public class GroupChatActivity extends AppCompatActivity {
     private void initializeFields() {
         mToolbar = findViewById(R.id.group_chat_bar_layout);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setTitle(currentGroupName);
+
         sendMessageButton = findViewById(R.id.send_message_button);
         userMessageInput = findViewById(R.id.input_group_message);
         displayTextMessages = findViewById(R.id.group_chat_text_display);

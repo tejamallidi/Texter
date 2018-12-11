@@ -17,6 +17,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -28,7 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
-    private DatabaseReference usersRef, chatRequestRef, contactsRef;
+    private DatabaseReference usersRef, chatRequestRef, contactsRef, notificationRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         chatRequestRef = FirebaseDatabase.getInstance().getReference().child("Chat Requests");
         contactsRef = FirebaseDatabase.getInstance().getReference().child("Contacts");
+        notificationRef = FirebaseDatabase.getInstance().getReference().child("Notifications");
 
         receiverUserID = getIntent().getExtras().get("visitUserID").toString();
         senderUserID = mAuth.getCurrentUser().getUid();
@@ -275,9 +278,22 @@ public class ProfileActivity extends AppCompatActivity {
                                        @Override
                                        public void onComplete(@NonNull Task<Void> task) {
                                            if(task.isSuccessful()){
-                                               sendMessageRequestButton.setEnabled(true);
-                                               currentState = "request_sent";
-                                               sendMessageRequestButton.setText("Decline Chat Request");
+                                               HashMap<String, String> chatNotificationMap = new HashMap<>();
+                                               chatNotificationMap.put("from", senderUserID);
+                                               chatNotificationMap.put("type", "request");
+
+                                               notificationRef.child(receiverUserID).push()
+                                                       .setValue(chatNotificationMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                   @Override
+                                                   public void onComplete(@NonNull Task<Void> task) {
+                                                       if(task.isSuccessful()){
+                                                           sendMessageRequestButton.setEnabled(true);
+                                                           currentState = "request_sent";
+                                                           sendMessageRequestButton.setText("Decline Chat Request");
+                                                       }
+                                                   }
+                                               });
+
                                            }
                                        }
                                    });

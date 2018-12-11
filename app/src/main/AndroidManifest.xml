@@ -21,7 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoginActivity"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".RegisterActivity" />
         <activity
             android:name=".SettingsActivity"
@@ -37,6 +38,7 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".ChatActivity"
             android:parentActivityName=".MainActivity"></activity>
+
     </application>
 
 </manifest>

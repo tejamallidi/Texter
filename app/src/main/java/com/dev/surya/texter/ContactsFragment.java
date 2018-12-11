@@ -1,6 +1,7 @@
 package com.dev.surya.texter;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -116,6 +117,7 @@ public class ContactsFragment extends Fragment {
                                 holder.userName.setText(profileName);
                                 holder.userStatus.setText(profileStatus);
                             }
+
                         }
                     }
 
@@ -129,7 +131,7 @@ public class ContactsFragment extends Fragment {
             @NonNull
             @Override
             public ContactsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.users_display_layout, viewGroup, false);
+                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.users_layout, viewGroup, false);
                 ContactsViewHolder viewHolder = new ContactsViewHolder(view);
                 return viewHolder;
             }

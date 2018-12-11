@@ -34,7 +34,7 @@
 
         <EditText
             android:id="@+id/input_message"
-            android:layout_width="320dp"
+            android:layout_width="350dp"
             android:layout_height="45dp"
             android:hint="Type a message"
             android:paddingStart="17dp"
